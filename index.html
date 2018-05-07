@@ -1,0 +1,52 @@
+<html>
+
+<head>
+  <title>Authentication Example</title>
+  <!-- <link type="text/css" rel="stylesheet" href="https://cdn.firebase.com/libs/firebaseui/2.5.1/firebaseui.css" /> -->
+</head>
+
+<body>
+
+<script src="https://www.gstatic.com/firebasejs/4.9.1/firebase.js"></script>
+<script>
+  // Initialize Firebase
+  var config = {
+    apiKey: "",
+    authDomain: "teemac-lunch.firebaseapp.com",
+    databaseURL: "https://teemac-lunch.firebaseio.com",
+    projectId: "teemac-lunch",
+    storageBucket: "",
+    messagingSenderId: "657797965628"
+  };
+  firebase.initializeApp(config);
+ var database = firebase.database();
+
+
+  function login() {
+    function newLoginHappened(user) {
+      if (user) {
+        app(user)
+      } else {
+        var provider = new firebase.auth.GoogleAuthProvider()
+        firebase.auth().signInWithRedirect(provider)
+      }
+    }
+    firebase.auth().onAuthStateChanged(newLoginHappened)
+  }
+
+  function app(user) {
+    console.log(user)
+    firebase.auth().currentUser.getIdToken(/* forceRefresh */ true).then(function(idToken) {
+      console.log(idToken)
+      // Send token to your backend via HTTPS
+      // ...
+    }).catch(function(error) {
+      // Handle error
+    });
+  }
+
+  document.onload = login();
+</script>
+</body>
+
+</html>
